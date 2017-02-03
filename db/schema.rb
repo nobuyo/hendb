@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170203064413) do
+ActiveRecord::Schema.define(version: 20170203082018) do
 
   create_table "aspire_univs", force: :cascade do |t|
     t.integer "user_id"
@@ -21,13 +21,9 @@ ActiveRecord::Schema.define(version: 20170203064413) do
   end
 
   create_table "exams", force: :cascade do |t|
-    t.integer "subject_id"
-    t.string  "contents"
-    t.index ["subject_id"], name: "index_exams_on_subject_id"
-  end
-
-  create_table "subjects", force: :cascade do |t|
-    t.string "name"
+    t.integer "univ_id"
+    t.integer "subject"
+    t.index ["univ_id"], name: "index_exams_on_univ_id"
   end
 
   create_table "univs", force: :cascade do |t|
@@ -38,10 +34,11 @@ ActiveRecord::Schema.define(version: 20170203064413) do
     t.date     "result_date"
     t.date     "affirmation_date"
     t.integer  "admit_units"
+    t.text     "remark"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.integer  "exam_id"
-    t.index ["exam_id"], name: "index_univs_on_exam_id"
+    t.string   "dept"
+    t.string   "url"
   end
 
   create_table "users", force: :cascade do |t|

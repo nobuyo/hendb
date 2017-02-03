@@ -8,6 +8,7 @@ class CreateUnivs < ActiveRecord::Migration[5.0]
       t.date    :result_date
       t.date    :affirmation_date
       t.integer :admit_units
+      t.text    :remark
       t.timestamps
     end
   end

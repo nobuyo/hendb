@@ -17,9 +17,14 @@ class User < ActiveRecord::Base
     end
   end
 
-  def auth(email, password)
-    user = self.where(email: email)
-    hashed = BCrypt::Engine.hash_secret(password, user.password_salt)
-    (user && user.password_hash == hashed)? user : nil
+  def self.auth(email, password)
+    user = self.where(email: email).first
+    if user && user.password_hash == BCrypt::Engine.hash_secret(password, user.password_salt)
+      user
+    else
+      nil
+    end
   end
+
+
 end

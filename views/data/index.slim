@@ -1,0 +1,20 @@
+- @data.each do |d|
+  div
+    table
+      tr
+        td
+          = d.name
+      tr
+        td
+          = d.dept
+      tr
+        td
+          | 所在地 #{d.pref}
+      tr
+        td
+          - d.exams.each do |ex|
+            = translate_to_subject(ex.subject)
+            | ,
+
+
+==link_to('/data/new', 'new')
