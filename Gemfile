@@ -9,3 +9,5 @@ gem 'sinatra-activerecord'
 gem 'rake'
 gem 'sinatra-contrib'
 gem 'slim'
+gem 'bcrypt'
+gem "rack-flash3"
