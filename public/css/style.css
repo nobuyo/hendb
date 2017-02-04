@@ -9,6 +9,11 @@ body {
   font-weight: bold;
 }
 
+.banner {
+  background-color: #3D4A5F;
+  color: #EEE;
+}
+
 .space {
   margin-top: 1em;
 }
@@ -35,7 +40,7 @@ body {
   color: gold;
 }
 
-/*.spacing-lg {
+.spacing-lg {
   margin-top: 20%;
 }
 
@@ -53,12 +58,24 @@ body {
 
 .spacing-ty {
   margin-top: 2%;
-}*/
+}
 
 .lg {
   font-size: 2em;
 }
 
+.md {
+  font-size: 1.4em;
+}
+
 .exlg {
   font-size: 10em;
 }
+
+.btn-lg {
+  padding: 48px 20%;
+  font-size: 30px;
+  line-height: 1.3333333;
+  border-radius: 12px;
+}
+

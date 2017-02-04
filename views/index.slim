@@ -1,4 +1,17 @@
 .text-center
-  .jumpotoron
+  .jumpotoron.spacing-md
     h1.exlg HenDB
-    p.lg 編入学試験情報のデータまとめ
+    .banner
+      p.lg 編入学試験情報のデータまとめ
+    .spacing-sm
+    - if @user.nil?
+      span.md
+        a href="/auth/sign_in" ログイン
+        | または
+        a href="/auth/sign_up" 新規登録
+    - else
+      .row
+        .col-md-3.col-md-offset-3
+          a.btn.btn-lg.btn-default href="/data/" 大学情報
+        .col-md-3
+          a.btn.btn-lg.btn-default href="/data/bookmark" マイ志望

@@ -1,13 +1,13 @@
-h1 Sign In
+h1 ログイン
 form action='/auth/authenticate' method='post'
   fieldset
     p.form-group
-      label for="email"  EMail:
+      label for="email"  メールアドレス:
       input.form-control name="email" type="text" value="" 
     p.form-group
-      label for="password"  Password:
+      label for="password"  パスワード:
       input.form-control name="password" type="password" value="" 
     p.form-group
-      input.btn.btn-defalut type="submit" value=("Sign in")
+      input.btn.btn-defalut type="submit" value=("ログイン")
 
 ==link_to('/auth/sign_up', '新規登録')

@@ -16,19 +16,31 @@ html
         .collapse.navbar-collapse
           ul.nav.navbar-nav
             li
-              a href="/" ホーム
+              a href="/"
+                i.fa.fa-home
+                | ホーム
             - if @user
               li
-                a href="/data/"  大学情報
+                a href="/data/"
+                  i.fa.fa-university
+                  | 大学情報
               li
-                a href="/data/bookmarks"  マイ志望校
+                a href="/data/bookmarks" 
+                  i.fa.fa-star
+                  | マイ志望校
               li
-                a href="/profile/mypage"  プロフィール
+                a href="/profile/mypage"
+                  i.fa.fa-user
+                  | プロフィール
               li
-                a href="/auth/sign_out" ログアウト(#{@user.email})
+                a href="/auth/sign_out"
+                  i.fa.fa-sign-out
+                  | ログアウト(#{@user.email})
             - else
               li
-                a href="/auth/sign_in" ログイン
+                a href="/auth/sign_in"
+                  i.fa.fa-sign-in
+                  | ログイン
 
     .container
       == yield
