@@ -1,0 +1,16 @@
+h1 Edit Profile
+form action='/profile/patch' method='post'
+  fieldset
+    input.hidden name="_method" value="PUT"
+    input.hidden name="id" value="#{@user.id}"
+    p.form-group
+      label for="email"  EMail:
+      input.form-control name="email" type="text" value="#{@user.email}" 
+    p.form-group
+      label for="password"  Password:
+      input.form-control name="password" type="password" value=""
+    p.form-group
+      label for="confirm_password"  Confirm Password:
+      input.form-control name="confirm_password" type="password" value=""
+    p.form-group
+      input.form-control type="submit" value=("OK")

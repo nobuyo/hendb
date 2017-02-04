@@ -3,6 +3,11 @@
     h3.panel-title
       a href="/data/univ/#{d.id}"
         | #{d.name} #{d.dept}
+        - if @user.is_admin
+          a.space-left href="/data/edit/#{d.id}"
+            i.fa.fa-pencil
+          / a.space-left href="/data/delete/#{d.id}"
+          /   i.fa.fa-trash-o
   .panel-body
     table.table
       tr

@@ -12,18 +12,20 @@ html
     nav.navbar.navbar-default
       .container-fluid
         .navbar-header
-          a.navbar-brand href="#" HenDB
+          a.navbar-brand#brand href="#" HenDB
         .collapse.navbar-collapse
           ul.nav.navbar-nav
             li
-              a href="/" Home
+              a href="/" ホーム
             - if @user
               li
                 a href="/data/"  大学情報
               li
                 a href="/data/bookmarks"  マイ志望校
               li
-                a href="/auth/sign_out" ログアウト
+                a href="/profile/mypage"  プロフィール
+              li
+                a href="/auth/sign_out" ログアウト(#{@user.email})
             - else
               li
                 a href="/auth/sign_in" ログイン

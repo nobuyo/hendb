@@ -13,6 +13,7 @@ set :environment, :production
 ActiveRecord::Base.configurations = YAML.load_file('database.yml')
 ActiveRecord::Base.establish_connection :development
 
+enable :method_override
 enable :sessions
 set :session_secret, "My session secret", expire_after: 300
 
@@ -95,6 +96,9 @@ end
 namespace '/data' do
   get '/' do
     @data = Univ.all
+    if @data.blank?
+      @mess = "大学情報はまだありません。"
+    end
     slim :'data/index'
   end
 
@@ -119,7 +123,12 @@ namespace '/data' do
       affirmation_date: params[:affirmation_date],
       document_url: params[:document_url],
       remark: params[:remark])
-    redirect "/univ/params[:id]"
+    univ.exams.destroy_all
+    params[:exam].each do |e|
+      univ.exams.build(subject: e.to_i)
+    end
+    univ.save!
+    redirect "/data/univ/#{params[:id]}"
   end
 
   get '/bookmarks' do
@@ -143,6 +152,9 @@ namespace '/data' do
 
   get '/search' do
     @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{params[:q]}%","%#{params[:q]}%","%#{params[:q]}%")
+    if @data.blank?
+      @mess = "検索条件に当てはまるものはまだありません。"
+    end
     slim :'data/index'
   end
 
@@ -172,10 +184,31 @@ namespace '/data' do
   end
 end
 
-get '/' do
-  if session[:user_id]
-    slim :content
-  else
-    slim :index
+namespace '/profile' do
+  get '/mypage' do
+    slim :'profile/mypage'
   end
+
+  get '/edit/:id' do
+    @data = Univ.find(params[:id])
+    slim :'profile/edit'
+  end
+
+  put '/patch' do
+    if params[:password] == params[:confirm_password]
+      user = @user
+      user.update!(email: params[:email])
+      user.encrypt_password(params[:password])
+      if user.save!
+        session[:user_id] = user.id
+        redirect "/profile/mypage"
+      end
+    else
+      redirect "/profile/edit/#{params[:id]}"
+    end
+  end
+end
+
+get '/' do
+  slim :index
 end

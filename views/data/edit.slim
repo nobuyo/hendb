@@ -1,29 +1,30 @@
 h1 Edit Univ Data
-form action='/data/patch' method='put'
+form action='/data/patch' method='post'
   fieldset
+    input.hidden name="_method" value="PUT"
     input.hidden name="id" value="#{@data.id}"
-    p
+    p.form-group
       label for="name"  大学名:
-      input name="name" type="text" value="#{@data.name}"
-    p
+      input.form-control name="name" type="text" value="#{@data.name}"
+    p.form-group
       label for="dept"  学部:
-      input name="dept" type="text" value="#{@data.dept}"
-    p
+      input.form-control name="dept" type="text" value="#{@data.dept}"
+    p.form-group
       label for="pref"  所在県:
-      input name="pref" type="text" value="#{@data.pref}"
-    p
+      input.form-control name="pref" type="text" value="#{@data.pref}"
+    p.form-group
       label for="deviation_value"  偏差値:
-      input name="deviation_value" type="number" value="#{@data.deviation_value}"
-    p
+      input.form-control name="deviation_value" type="number" value="#{@data.deviation_value}"
+    p.form-group
       label for="exam_date"  試験日:
-      input name="exam_date" type="date" value="#{@data.exam_date}"
-    p
+      input.form-control name="exam_date" type="date" value="#{@data.exam_date}"
+    p.form-group
       label for="result_date"  合格発表日:
-      input name="result_date" type="date" value="#{@data.result_date}"
-    p
+      input.form-control name="result_date" type="date" value="#{@data.result_date}"
+    p.form-group
       label for="affirmation_date"  確約書締め切り:
-      input name="affirmation_date" type="date" value="#{@data.affirmation_date}"
-    p
+      input.form-control name="affirmation_date" type="date" value="#{@data.affirmation_date}"
+    p.form-group
       label for="exam[]"  科目:
       input type="checkbox" name="exam[]" value="1" checked=("checked" if selected_subject(1,@data.exams)) 国語
       input type="checkbox" name="exam[]" value="2" checked=("checked" if selected_subject(2,@data.exams)) 数学
@@ -34,11 +35,11 @@ form action='/data/patch' method='put'
       input type="checkbox" name="exam[]" value="7" checked=("checked" if selected_subject(7,@data.exams)) 専門
       input type="checkbox" name="exam[]" value="8" checked=("checked" if selected_subject(8,@data.exams)) 面接
       input type="checkbox" name="exam[]" value="9" checked=("checked" if selected_subject(9,@data.exams)) 小論文
-    p
+    p.form-group
       label for="document_url"  募集要項リンク:
-      input name="document_url" type="url" value="#{@data.document_url}"
-    p
+      input.form-control name="document_url" type="url" value="#{@data.document_url}"
+    p.form-group
       label for="remark"  備考:
-      input name="remark" type="text" value="#{@data.remark}"
-    p
-      input type="submit" value="OK"
+      input.form-control name="remark" type="text" value="#{@data.remark}"
+    p.form-group
+      input.form-control type="submit" value="OK"

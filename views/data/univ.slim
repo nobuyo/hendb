@@ -4,11 +4,15 @@ a href="/data/"
 
 h2 
   |#{@univ.name} #{@univ.dept}
-  a href="/data/edit/#{@univ.id}"
-    i.fa.fa-pencil
 
 table.table
   tr
+    - if @user.is_admin
+      td
+        a.space-left href="/data/edit/#{@univ.id}"
+          i.fa.fa-pencil
+        a.space-left href="/data/delete/#{@univ.id}"
+          i.fa.fa-trash-o
     == slim :'data/_star', locals: {id: @univ.id}
 
 h3 基本情報

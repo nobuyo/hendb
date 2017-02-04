@@ -1,14 +1,14 @@
 h1 Sign Up
 form action='/auth/register' method='post'
   fieldset
-    p
+    p.form-group
       label for="email"  EMail:
-      input name="email" type="text" value="" 
-    p
+      input.form-control name="email" type="text" value="" 
+    p.form-group
       label for="password"  Password:
-      input name="password" type="password" value="" 
-    p
+      input.form-control name="password" type="password" value="" 
+    p.form-group
       label for="confirm_password"  Confirm Password:
-      input name="confirm_password" type="password" value="" 
-    p
-      input type="submit" value=("Sign Up")
+      input.form-control name="confirm_password" type="password" value="" 
+    p.form-group
+      input.btn.btn-defalut type="submit" value=("Sign Up")

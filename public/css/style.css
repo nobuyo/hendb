@@ -5,6 +5,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 
+#brand {
+  font-weight: bold;
+}
+
 .space {
   margin-top: 1em;
 }
@@ -29,4 +33,32 @@ body {
 
 .yellow {
   color: gold;
+}
+
+/*.spacing-lg {
+  margin-top: 20%;
+}
+
+.spacing-ml {
+  margin-top: 15%;
+}
+
+.spacing-md {
+  margin-top: 10%;
+}
+
+.spacing-sm {
+  margin-top: 5%;
+}
+
+.spacing-ty {
+  margin-top: 2%;
+}*/
+
+.lg {
+  font-size: 2em;
+}
+
+.exlg {
+  font-size: 10em;
 }

@@ -1,0 +1,17 @@
+h1 マイページ
+
+hr
+
+h3 基本情報
+
+table.table.table-striped
+  tr
+    td 
+      | email
+    td
+      = @user.email
+  tr
+    td
+      | アカウント設定
+    td
+      ==link_to("/profile/edit/#{@user.id}", '移動')
