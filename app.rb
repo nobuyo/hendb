@@ -58,7 +58,7 @@ namespace '/auth' do
   post '/register' do
     unless User.exists?(email: params[:email])
       if params[:password] == params[:confirm_password]
-        user = User.new(email: params[:email])
+        user = User.new(email: Rack::Utils.escape_html(params[:email]))
         user.encrypt_password(params[:password])
         if user.save!
           session[:user_id] = user.id
@@ -114,16 +114,16 @@ namespace '/data' do
   put '/patch' do
     univ = Univ.find(params[:id])
     univ.update_attributes!(
-      name: params[:name],
-      dept: params[:dept],
-      pref: params[:pref],
+      name: Rack::Utils.escape_html(params[:name]),
+      dept: Rack::Utils.escape_html(params[:dept]),
+      pref: Rack::Utils.escape_html(params[:pref]),
       deviation_value: params[:deviation_value],
       exam_date: params[:exam_date],
       result_date: params[:result_date],
       affirmation_date: params[:affirmation_date],
       admit_units: params[:admit_units],
-      document_url: params[:document_url],
-      remark: params[:remark])
+      document_url: Rack::Utils.escape_html(params[:document_url]),
+      remark: Rack::Utils.escape_html(params[:remark]))
     univ.exams.destroy_all
     params[:exam].each do |e|
       univ.exams.build(subject: e.to_i)
@@ -158,7 +158,8 @@ namespace '/data' do
   end
 
   get '/search' do
-    @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{params[:q]}%","%#{params[:q]}%","%#{params[:q]}%")
+    query = Rack::Utils.escape_html(params[:q])
+    @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{query}%","%#{query}%","%#{query}%")
     if @data.blank?
       @mess = "検索条件に当てはまるものはまだありません。"
     end
@@ -179,16 +180,16 @@ namespace '/data' do
   post '/create' do
     unless Univ.exists?(name: params[:name])
       univ = Univ.new(
-        name: params[:name],
-        dept: params[:dept],
-        pref: params[:pref],
+        name: Rack::Utils.escape_html(params[:name]),
+        dept: Rack::Utils.escape_html(params[:dept]),
+        pref: Rack::Utils.escape_html(params[:pref]),
         deviation_value: params[:deviation_value],
         exam_date: params[:exam_date],
         result_date: params[:result_date],
         affirmation_date: params[:affirmation_date],
         admit_units: params[:admit_units],
-        document_url: params[:document_url],
-        remark: params[:remark])
+        document_url: Rack::Utils.escape_html(params[:document_url]),
+        remark: Rack::Utils.escape_html(params[:remark]))
       params[:exam].each do |e|
         univ.exams.build(subject: e.to_i)
       end
@@ -218,7 +219,7 @@ namespace '/profile' do
   put '/patch' do
     if params[:password] == params[:confirm_password]
       user = @user
-      user.update!(email: params[:email])
+      user.update!(email: Rack::Utils.escape_html(params[:email]))
       user.encrypt_password(params[:password])
       if user.save!
         session[:user_id] = user.id
