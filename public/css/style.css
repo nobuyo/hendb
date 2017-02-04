@@ -6,5 +6,27 @@ body {
 }
 
 .space {
-  margin-top: 10%;
+  margin-top: 1em;
+}
+
+.space-left {
+  margin-left: 1em;
+}
+
+.subjects {
+  margin: 0;
+}
+
+.label-default {
+  background-color: #FFF;
+  border: 1px solid #999;
+  color: #555;
+}
+
+.table {
+  table-layout: fixed;
+}
+
+.yellow {
+  color: gold;
 }

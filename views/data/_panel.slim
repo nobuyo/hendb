@@ -1,26 +1,27 @@
-.panel.panel-default.space
+.panel.panel-default id="data_#{d.id}"
   .panel-heading
-    h3.panel-title 
-      | #{d.name} #{d.dept}
+    h3.panel-title
+      a href="/data/univ/#{d.id}"
+        | #{d.name} #{d.dept}
   .panel-body
     table.table
       tr
+        td 
+          | 大学名
         td
           = d.name
       tr
         td
+          | 学部名
+        td
           = d.dept
       tr
         td
-          | 所在地 #{d.pref}
-      tr
+          | 偏差値
         td
-          - d.exams.each do |ex|
-            a.label.label-default #{translate_to_subject(ex.subject)}
+          = d.deviation_value
+
+    table.table
       tr
-        td.text-right
-          form action='/data/bookmark' method='post' name='star'
-            fieldset
-              input.hidden name="univ_id" value="#{d.id}"
-              a.btn.btn-default href="javascript:document.star.submit()"
-                i.fa class="#{@user.aspireUnivs.exists?(univ_id: d.id)? 'fa-star' : 'fa-star-o'}"
+        == slim :'data/_subjects', locals: {d: d}
+        == slim :'data/_star', locals: {id: d.id}

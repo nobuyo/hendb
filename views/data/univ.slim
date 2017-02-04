@@ -1,0 +1,71 @@
+a href="/data/"
+  i.fa.fa-chevron-left 
+  = ' 戻る'
+
+h2 
+  |#{@univ.name} #{@univ.dept}
+  a href="/data/edit/#{@univ.id}"
+    i.fa.fa-pencil
+
+table.table
+  tr
+    == slim :'data/_star', locals: {id: @univ.id}
+
+h3 基本情報
+
+table.table.table-striped
+  tr
+    td 
+      | 大学名
+    td
+      = @univ.name
+  tr
+    td
+      | 学部名
+    td
+      = @univ.dept
+  tr
+    td
+      | 偏差値
+    td
+      = @univ.deviation_value
+
+h3 試験日程
+
+p.space-left それぞれの日付は前後するまたは2日間実施の場合があります。あくまで参考として、各自確認をしてください。
+
+table.table.table-striped
+  tr
+    td 
+      | 実施日
+    td
+      = @univ.exam_date
+  tr
+    td
+      | 合格発表
+    td
+      = @univ.result_date
+  tr
+    td
+      | 確約書締め切り
+    td
+      = @univ.affirmation_date ||= '記載なし'
+
+h3 募集要項リンク
+
+.space-left
+  - if @univ.document_url.nil?
+    h5
+      a href=@univ.document_url
+        i.fa.fa-external-link
+        | 要項(外部)
+  - else
+    | 募集要項はまだありません
+
+h3 実施科目
+
+p.space-left クリックすることでその科目について試験を実施する大学を検索できます。
+
+table.table
+  tr
+    == slim :'data/_subjects', locals: {d: @univ}

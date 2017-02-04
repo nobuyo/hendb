@@ -1,12 +1,15 @@
-form.form-inline  action='/data/search' method='get'
+form.form-inline action='/data/search' method='get'
   .row
     .col-md-10
       input.form-control type="text" name="q" placeholder="大学検索..."
-      a.btn.btn-default href="javascript:document.star.submit()"
+      button.btn.btn-default type="submit"
         i.fa.fa-search
-    .col-md-2
-      .text-right
-        a.btn.btn-default href="/data/new" 大学情報を登録
+    - if @user.is_admin
+      .col-md-2
+        .text-right
+          a.btn.btn-default href="/data/new" 大学情報を登録
+
+.space
 
 - @data.each do |d|
   == slim :'/data/_panel', locals:{d: d}

@@ -1,0 +1,6 @@
+td
+  ul.list-inline.subjects
+    - d.exams.each do |ex|
+      li
+        h4
+          a.label.label-default href="/data/search/tags/#{ex.subject}" #{translate_to_subject(ex.subject)}

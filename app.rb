@@ -24,6 +24,10 @@ helpers do
   def translate_to_subject(nb)
     %w(国語 数学 物理 化学 英語 TOEIC/TOEFL 専門 面接 小論文)[nb-1]
   end
+
+  def selected_subject(nb,exams)
+    exams.pluck('subject').to_a.include?(nb)
+  end
 end
 
 namespace '/auth' do
@@ -98,6 +102,26 @@ namespace '/data' do
     slim :'data/new'
   end
 
+  get '/edit/:id' do
+    @data = Univ.find(params[:id])
+    slim :'data/edit'
+  end
+
+  put '/patch' do
+    univ = Univ.find(params[:id])
+    univ.update_attributes!(
+      name: params[:name],
+      dept: params[:dept],
+      pref: params[:pref],
+      deviation_value: params[:deviation_value],
+      exam_date: params[:exam_date],
+      result_date: params[:result_date],
+      affirmation_date: params[:affirmation_date],
+      document_url: params[:document_url],
+      remark: params[:remark])
+    redirect "/univ/params[:id]"
+  end
+
   get '/bookmarks' do
     @bookmark = true
     @data = @user.aspireUnivs
@@ -109,17 +133,27 @@ namespace '/data' do
     user = @user
     unless user.aspireUnivs.exists?(univ_id: params[:univ_id])
       user.aspireUnivs.create!(univ_id: params[:univ_id])
-      redirect '/data/'
+      redirect "/data/#data_#{params[:univ_id]}"
     else
       au = user.aspireUnivs.find_by(univ_id: params[:univ_id])
       au.destroy!
-      redirect '/data/'
+      redirect "/data/#data_#{params[:univ_id]}"
     end
   end
 
   get '/search' do
-    @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{params[:q]}%")
+    @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{params[:q]}%","%#{params[:q]}%","%#{params[:q]}%")
     slim :'data/index'
+  end
+
+  get '/search/tags/:s' do
+    @data = Univ.joins(:exams).where(exams: {subject: params[:s]})
+    slim :'data/index'
+  end
+
+  get '/univ/:id' do
+    @univ = Univ.find(params[:id])
+    slim :'data/univ'
   end
 
   post '/create' do
@@ -127,7 +161,7 @@ namespace '/data' do
       univ = Univ.new(name: params[:name], dept: params[:dept],
         pref: params[:pref], deviation_value: params[:deviation_value],
         exam_date: params[:exam_date], result_date: params[:result_date],
-        affirmation_date: params[:affirmation_date], url: params[:url], remark: params[:remark])
+        affirmation_date: params[:affirmation_date], document_url: params[:document_url], remark: params[:remark])
       params[:exam].each do |e|
         univ.exams.build(subject: e.to_i)
       end

@@ -37,15 +37,16 @@ ActiveRecord::Schema.define(version: 20170203082018) do
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
     t.string   "dept"
-    t.string   "url"
+    t.string   "document_url"
   end
 
   create_table "users", force: :cascade do |t|
     t.string   "email"
+    t.boolean  "is_admin",      default: false
     t.string   "password_hash"
     t.string   "password_salt"
-    t.datetime "created_at",    null: false
-    t.datetime "updated_at",    null: false
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
   end
 
 end
