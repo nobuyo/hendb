@@ -134,6 +134,7 @@ namespace '/data' do
   get '/bookmarks' do
     @bookmark = true
     @data = @user.aspireUnivs
+    @rq = request.path
 
     slim :'data/bookmarks'
   end
@@ -142,10 +143,15 @@ namespace '/data' do
     user = @user
     unless user.aspireUnivs.exists?(univ_id: params[:univ_id])
       user.aspireUnivs.create!(univ_id: params[:univ_id])
-      redirect "/data/#data_#{params[:univ_id]}"
     else
       au = user.aspireUnivs.find_by(univ_id: params[:univ_id])
       au.destroy!
+    end
+    if params[:req_path] =~ %r(^/data/univ/.*)
+      redirect "/data/univ/#{params[:univ_id]}"
+    elsif params[:req_path] == '/data/bookmarks'
+      redirect "/data/bookmarks"
+    else
       redirect "/data/#data_#{params[:univ_id]}"
     end
   end

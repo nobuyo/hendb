@@ -1,7 +1,7 @@
 td.text-right
   form action='/data/bookmark' method='post' class='starbutton'
     fieldset
-      input.hidden name="univ_id" value="#{id}"
+      input.hidden name="req_path" value="#{request.path}"
       input.hidden name="univ_id" value="#{id}"
       button.btn.btn-default onclick="javascript:$this.parent().submit()"
         i.fa class="#{@user.aspireUnivs.exists?(univ_id: id)? 'fa-star yellow' : 'fa-star-o'}"
