@@ -5,14 +5,18 @@ a href="/data/"
 h2 
   |#{@univ.name} #{@univ.dept}
 
-table.table
-  tr
+.row
+  .col-md-1
     - if @user.is_admin
-      td
-        a.space-left href="/data/edit/#{@univ.id}"
-          i.fa.fa-pencil
-        a.space-left href="/data/delete/#{@univ.id}"
+      a.btn href="/data/edit/#{@univ.id}"
+        i.fa.fa-pencil
+  .col-md-1
+    - if @user.is_admin
+      form.form.form-inline action="/data/delete/#{@univ.id}" method="post" name="delbtn"
+        input.hidden name="_method" value="DELETE"
+        a.btn onclick="javascript:confirm('削除します、よろしいですか?')&&document.delbtn.submit();"
           i.fa.fa-trash-o
+  .col-md-4.text-right.col-md-offset-6
     == slim :'data/_star', locals: {id: @univ.id}
 
 h3 基本情報
@@ -65,6 +69,21 @@ h3 募集要項リンク
         | 要項(外部)
   - else
     | 募集要項はまだありません
+
+h3 認定単位数
+
+.space-left
+  - if @univ.admit_units
+    = "#{@univ.admit_units}"
+  - else
+    | 記載なし
+
+h3 備考
+.space-left
+  - if @univ.remark
+    = "#{@univ.remark}"
+  - else
+    | 特になし
 
 h3 実施科目
 

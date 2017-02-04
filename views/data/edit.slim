@@ -25,6 +25,9 @@ form action='/data/patch' method='post'
       label for="affirmation_date"  確約書締め切り:
       input.form-control name="affirmation_date" type="date" value="#{@data.affirmation_date}"
     p.form-group
+      label for="admit_units"  認定単位数:
+      input.form-control name="admit_units" type="number" value="#{@data.admit_units}"
+    p.form-group
       label for="exam[]"  科目:
       input type="checkbox" name="exam[]" value="1" checked=("checked" if selected_subject(1,@data.exams)) 国語
       input type="checkbox" name="exam[]" value="2" checked=("checked" if selected_subject(2,@data.exams)) 数学

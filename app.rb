@@ -121,6 +121,7 @@ namespace '/data' do
       exam_date: params[:exam_date],
       result_date: params[:result_date],
       affirmation_date: params[:affirmation_date],
+      admit_units: params[:admit_units],
       document_url: params[:document_url],
       remark: params[:remark])
     univ.exams.destroy_all
@@ -166,6 +167,7 @@ namespace '/data' do
 
   get '/search/tags/:s' do
     @data = Univ.joins(:exams).where(exams: {subject: params[:s]})
+    @mess = "実施科目\"#{translate_to_subject(params[:s].to_i)}\"での検索結果"
     slim :'data/index'
   end
 
@@ -176,10 +178,17 @@ namespace '/data' do
 
   post '/create' do
     unless Univ.exists?(name: params[:name])
-      univ = Univ.new(name: params[:name], dept: params[:dept],
-        pref: params[:pref], deviation_value: params[:deviation_value],
-        exam_date: params[:exam_date], result_date: params[:result_date],
-        affirmation_date: params[:affirmation_date], document_url: params[:document_url], remark: params[:remark])
+      univ = Univ.new(
+        name: params[:name],
+        dept: params[:dept],
+        pref: params[:pref],
+        deviation_value: params[:deviation_value],
+        exam_date: params[:exam_date],
+        result_date: params[:result_date],
+        affirmation_date: params[:affirmation_date],
+        admit_units: params[:admit_units],
+        document_url: params[:document_url],
+        remark: params[:remark])
       params[:exam].each do |e|
         univ.exams.build(subject: e.to_i)
       end
@@ -187,6 +196,12 @@ namespace '/data' do
         redirect '/data/'
       end
     end
+  end
+
+  delete '/delete/:id' do
+    univ = Univ.find(params[:id])
+    univ.destroy!
+    redirect '/data/'
   end
 end
 
