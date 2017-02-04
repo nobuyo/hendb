@@ -1,0 +1,26 @@
+.panel.panel-default.space
+  .panel-heading
+    h3.panel-title 
+      | #{d.name} #{d.dept}
+  .panel-body
+    table.table
+      tr
+        td
+          = d.name
+      tr
+        td
+          = d.dept
+      tr
+        td
+          | 所在地 #{d.pref}
+      tr
+        td
+          - d.exams.each do |ex|
+            a.label.label-default #{translate_to_subject(ex.subject)}
+      tr
+        td.text-right
+          form action='/data/bookmark' method='post' name='star'
+            fieldset
+              input.hidden name="univ_id" value="#{d.id}"
+              a.btn.btn-default href="javascript:document.star.submit()"
+                i.fa class="#{@user.aspireUnivs.exists?(univ_id: d.id)? 'fa-star' : 'fa-star-o'}"

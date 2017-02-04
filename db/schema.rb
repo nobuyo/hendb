@@ -15,7 +15,6 @@ ActiveRecord::Schema.define(version: 20170203082018) do
   create_table "aspire_univs", force: :cascade do |t|
     t.integer "user_id"
     t.integer "univ_id"
-    t.integer "priority"
     t.index ["univ_id"], name: "index_aspire_univs_on_univ_id"
     t.index ["user_id"], name: "index_aspire_univs_on_user_id"
   end

@@ -1,20 +1,12 @@
+form.form-inline  action='/data/search' method='get'
+  .row
+    .col-md-10
+      input.form-control type="text" name="q" placeholder="大学検索..."
+      a.btn.btn-default href="javascript:document.star.submit()"
+        i.fa.fa-search
+    .col-md-2
+      .text-right
+        a.btn.btn-default href="/data/new" 大学情報を登録
+
 - @data.each do |d|
-  div
-    table
-      tr
-        td
-          = d.name
-      tr
-        td
-          = d.dept
-      tr
-        td
-          | 所在地 #{d.pref}
-      tr
-        td
-          - d.exams.each do |ex|
-            = translate_to_subject(ex.subject)
-            | ,
-
-
-==link_to('/data/new', 'new')
+  == slim :'/data/_panel', locals:{d: d}

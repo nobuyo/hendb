@@ -98,6 +98,30 @@ namespace '/data' do
     slim :'data/new'
   end
 
+  get '/bookmarks' do
+    @bookmark = true
+    @data = @user.aspireUnivs
+
+    slim :'data/bookmarks'
+  end
+
+  post '/bookmark' do
+    user = @user
+    unless user.aspireUnivs.exists?(univ_id: params[:univ_id])
+      user.aspireUnivs.create!(univ_id: params[:univ_id])
+      redirect '/data/'
+    else
+      au = user.aspireUnivs.find_by(univ_id: params[:univ_id])
+      au.destroy!
+      redirect '/data/'
+    end
+  end
+
+  get '/search' do
+    @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{params[:q]}%")
+    slim :'data/index'
+  end
+
   post '/create' do
     unless Univ.exists?(name: params[:name])
       univ = Univ.new(name: params[:name], dept: params[:dept],

@@ -2,18 +2,31 @@ doctype html
 html
   head
     title HenDB
-    link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" rel="stylesheet" /
-    script crossorigin="anonymous" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" src="https://code.jquery.com/jquery-3.1.1.slim.min.js" 
-    script crossorigin="anonymous" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" 
-    script crossorigin="anonymous" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" 
+    script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js" 
+    link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" rel="stylesheet" /
+    script crossorigin="anonymous" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" 
+    link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet" /
+    link href="css/style.css" rel="stylesheet" /
 
   body
-    nav.navbar.navbar-toggleable-md.navbar-light.bg-faded
-      #navbarNavAltMarkup.collapse.navbar-collapse
-        .navbar-nav
-          a.nav-item.nav-link.active href='/' Home
-          - if @user
-            a.nav-item.nav-link href="/data/"  大学情報
-            a.nav-item.nav-link href="/auth/sign_out"  ログアウト
+    nav.navbar.navbar-default
+      .container-fluid
+        .navbar-header
+          a.navbar-brand href="#" HenDB
+        .collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a href="/" Home
+            - if @user
+              li
+                a href="/data/"  大学情報
+              li
+                a href="/data/bookmarks"  マイ志望校
+              li
+                a href="/auth/sign_out" ログアウト
+            - else
+              li
+                a href="/auth/sign_in" ログイン
 
-    == yield
+    .container
+      == yield

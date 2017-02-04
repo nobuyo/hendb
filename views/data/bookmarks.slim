@@ -1,0 +1,5 @@
+- @data.each do |au|
+  - d = Univ.find(au.univ_id)
+  == slim :'/data/_panel', locals:{d: d}
+
+
