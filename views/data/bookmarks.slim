@@ -2,6 +2,8 @@
   .text-center.space
     p お気に入り登録された大学はまだありません。
 
+== slim :'data/_sort', locals: {path: 'data/bookmarks'}
+.space
 
 - @data.each do |au|
   == slim :'/data/_panel', locals:{d: au}

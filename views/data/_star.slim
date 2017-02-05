@@ -5,14 +5,3 @@ td.text-right
       input.hidden name="univ_id" value="#{id}"
       button.btn.btn-default onclick="javascript:$this.parent().submit()"
         i.fa class="#{@user.aspireUnivs.exists?(univ_id: id)? 'fa-star yellow' : 'fa-star-o'}"
-
-// javascript:
-//   function bookmark(id) {
-//     $.ajax({
-//       url: '/data/bookmark',
-//       method: 'post',
-//       data: {
-//         univ_id: id
-//       }
-//     });
-//   }

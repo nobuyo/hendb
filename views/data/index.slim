@@ -14,5 +14,8 @@ form.form-inline action='/data/search' method='get'
 - if @mess
   p.text-center.space #{@mess}
 
+== slim :'data/_sort', locals: {path: 'data/'}
+.space
+
 - @data.each do |d|
-  == slim :'/data/_panel', locals:{d: d}
+  == slim :'data/_panel', locals:{d: d}

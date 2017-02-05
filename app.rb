@@ -152,7 +152,11 @@ end
 
 namespace '/data' do
   get '/' do
-    @data = Univ.all
+    if %w(exam_date affirmation_date deviation_value).include?(params[:sort])
+      @data = Univ.all.order(params[:sort])
+    else
+      @data = Univ.all
+    end
     if @data.blank?
       @mess = "大学情報はまだありません。"
     end
@@ -200,8 +204,11 @@ namespace '/data' do
   end
 
   get '/bookmarks' do
-    @bookmark = true
-    @data = @user.univs
+    if %w(exam_date affirmation_date deviation_value).include?(params[:sort])
+      @data = @user.univs.order(params[:sort])
+    else
+      @data = @user.univs
+    end
 
     slim :'data/bookmarks'
   end
