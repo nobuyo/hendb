@@ -5,9 +5,13 @@ source "https://rubygems.org"
 gem 'sinatra'
 gem 'sqlite3'
 gem 'activerecord'
-gem 'sinatra-activerecord'
+gem 'sinatra-activerecord' #for db migration
 gem 'rake'
 gem 'sinatra-contrib'
 gem 'slim'
 gem 'bcrypt'
-gem "rack-flash3"
+
+group :test do
+  gem 'rspec'
+  gem 'rack-test'
+end

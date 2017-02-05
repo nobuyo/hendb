@@ -93,6 +93,10 @@ before '/data/*' do
   end
 end
 
+before %r(/data/edit|new|create|patch|delete/?.*) do
+  return status 403 unless @user.is_admin
+end
+
 namespace '/data' do
   get '/' do
     @data = Univ.all
@@ -107,8 +111,12 @@ namespace '/data' do
   end
 
   get '/edit/:id' do
-    @data = Univ.find(params[:id])
-    slim :'data/edit'
+    begin
+      @data = Univ.find(params[:id])
+      slim :'data/edit'
+    rescue
+      return status 404
+    end
   end
 
   put '/patch' do
@@ -135,7 +143,6 @@ namespace '/data' do
   get '/bookmarks' do
     @bookmark = true
     @data = @user.aspireUnivs
-    @rq = request.path
 
     slim :'data/bookmarks'
   end
@@ -168,13 +175,21 @@ namespace '/data' do
 
   get '/search/tags/:s' do
     @data = Univ.joins(:exams).where(exams: {subject: params[:s]})
-    @mess = "実施科目\"#{translate_to_subject(params[:s].to_i)}\"での検索結果"
+    if @data.blank?
+      @mess = "検索条件に当てはまるものはまだありません。"
+    else
+      @mess = "実施科目\"#{translate_to_subject(params[:s].to_i)}\"での検索結果"
+    end
     slim :'data/index'
   end
 
   get '/univ/:id' do
-    @univ = Univ.find(params[:id])
-    slim :'data/univ'
+    begin
+      @univ = Univ.find(params[:id])
+      slim :'data/univ'
+    rescue
+      return status 404
+    end
   end
 
   post '/create' do
@@ -200,9 +215,13 @@ namespace '/data' do
   end
 
   delete '/delete/:id' do
-    univ = Univ.find(params[:id])
-    univ.destroy!
-    redirect '/data/'
+    begin
+      univ = Univ.find(params[:id])
+      univ.destroy!
+      redirect '/data/'
+    rescue
+      return status 404
+    end
   end
 end
 
@@ -212,8 +231,12 @@ namespace '/profile' do
   end
 
   get '/edit/:id' do
-    @data = Univ.find(params[:id])
-    slim :'profile/edit'
+    begin
+      @user = User.find(params[:id])
+      slim :'profile/edit'
+    rescue
+      return status 404
+    end
   end
 
   put '/patch' do
@@ -233,4 +256,12 @@ end
 
 get '/' do
   slim :index
+end
+
+error 403 do
+  slim :'403'
+end
+
+not_found do
+  slim :'404'
 end

@@ -18,6 +18,10 @@ body {
   margin-top: 1em;
 }
 
+.unspace {
+  margin-top: -0.6em;
+}
+
 .space-left {
   margin-left: 1em;
 }
@@ -62,6 +66,11 @@ body {
 
 .md {
   font-size: 1.4em;
+}
+
+
+.lg {
+  font-size: 5em;
 }
 
 .exlg {
