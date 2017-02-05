@@ -2,6 +2,6 @@
   .text-center.space
     p お気に入り登録された大学はまだありません。
 
+
 - @data.each do |au|
-  - d = Univ.find(au.univ_id)
-  == slim :'/data/_panel', locals:{d: d}
+  == slim :'/data/_panel', locals:{d: au}

@@ -201,7 +201,7 @@ namespace '/data' do
 
   get '/bookmarks' do
     @bookmark = true
-    @data = @user.aspireUnivs
+    @data = @user.univs
 
     slim :'data/bookmarks'
   end
