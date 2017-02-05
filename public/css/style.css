@@ -60,14 +60,13 @@ body {
   margin-top: 2%;
 }
 
-.lg {
-  font-size: 2em;
-}
-
 .md {
   font-size: 1.4em;
 }
 
+.subtitle {
+  font-size: 4em;
+}
 
 .lg {
   font-size: 5em;
