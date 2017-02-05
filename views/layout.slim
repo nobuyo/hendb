@@ -43,4 +43,12 @@ html
                   | ログイン
 
     .container
+      - if @role == "danger"
+        .text-center.alert.alert-danger
+          p #{@alert}
+
+      - if @role == "info"
+        .text-center.alert.alert-info
+          p #{@alert}
       == yield
+

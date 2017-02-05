@@ -31,6 +31,28 @@ helpers do
   end
 end
 
+before %r{/$|/auth/*} do
+  case session[:flash]
+  when 1 then
+    @role = 'danger'
+    @alert = '確認用パスワードが一致しません'
+  when 2 then
+    @role = 'danger'
+    @alert = 'メールアドレスまたはパスワードが間違っています'
+  when 3 then
+    @role = 'danger'
+    @alert = 'すでに登録されているメールアドレスです'
+  when 4 then
+    @role = 'info'
+    @alert = 'ログインしました'
+  end
+  session[:flash] = 0
+end
+
+get '/' do
+  slim :index
+end
+
 namespace '/auth' do
   get '/sign_up' do
     session[:user_id] ||= nil
@@ -64,8 +86,12 @@ namespace '/auth' do
           session[:user_id] = user.id
           redirect "/"
         end
+      else
+        session[:flash] = 1
+        redirect '/auth/sign_up'
       end
     else
+      session[:flash] = 3
       redirect "/auth/sign_in"
     end
   end
@@ -74,8 +100,10 @@ namespace '/auth' do
     user = User.auth(params[:email], params[:password])
     unless user.nil?
       session[:user_id] = user.id
+      session[:flash] = 4
       redirect '/'
     else
+      session[:flash] = 2
       redirect "/auth/sign_in"
     end
   end
@@ -89,8 +117,33 @@ end
 
 before '/data/*' do
   unless session[:user_id]
+    session[:flash] = 1
     redirect "/auth/sign_in"
   end
+end
+
+before '/data/*' do
+  case session[:flash]
+  when 1 then
+    @role = 'danger'
+    @alert = 'ログインしてください'
+  when 2 then
+    @role = 'info'
+    @alert = '変更を保存しました'
+  when 3 then
+    @role = 'danger'
+    @alert = '変更の保存に失敗しました'
+  when 4 then
+    @role = 'info'
+    @alert = '保存しました'
+  when 5 then
+    @role = 'danger'
+    @alert = '保存に失敗しました'
+  when 6 then
+    @role = 'info'
+    @alert = '削除しました'
+  end
+  session[:flash] = 0
 end
 
 before %r(/data/edit|new|create|patch|delete/?.*) do
@@ -136,8 +189,14 @@ namespace '/data' do
     params[:exam].each do |e|
       univ.exams.build(subject: e.to_i)
     end
-    univ.save!
-    redirect "/data/univ/#{params[:id]}"
+    begin
+      univ.save!
+      session[:flash] = 2
+      redirect "/data/univ/#{params[:id]}"
+    rescue
+      session[:flash] = 3
+      redirect "/data/edit/#{params[:id]}"
+    end
   end
 
   get '/bookmarks' do
@@ -208,8 +267,12 @@ namespace '/data' do
       params[:exam].each do |e|
         univ.exams.build(subject: e.to_i)
       end
-      if univ.save!
+      begin
+        univ.save!
+        session[:flash] = 4
         redirect '/data/'
+      rescue
+        session[:flash] = 5
       end
     end
   end
@@ -218,6 +281,7 @@ namespace '/data' do
     begin
       univ = Univ.find(params[:id])
       univ.destroy!
+      session[:flash] = 6
       redirect '/data/'
     rescue
       return status 404
@@ -225,14 +289,33 @@ namespace '/data' do
   end
 end
 
+before '/profile/*' do
+  case session[:flash]
+  when 1 then
+    @role = 'info'
+    @alert = '変更を保存しました'
+  when 2 then
+    @role = 'danger'
+    @alert = '変更の保存に失敗しました'
+  when 3 then
+    @role = 'danger'
+    @alert = '確認用パスワードが一致しません'
+  end
+  session[:flash] = 0
+end
+
 namespace '/profile' do
   get '/mypage' do
     slim :'profile/mypage'
   end
 
+  before '/edit/:id' do
+    return status 403 unless params[:id].to_i == session[:user_id]
+  end
+
   get '/edit/:id' do
     begin
-      @user = User.find(params[:id])
+      @data = User.find(params[:id])
       slim :'profile/edit'
     rescue
       return status 404
@@ -244,18 +327,20 @@ namespace '/profile' do
       user = @user
       user.update!(email: Rack::Utils.escape_html(params[:email]))
       user.encrypt_password(params[:password])
-      if user.save!
+      begin
+        user.save!
         session[:user_id] = user.id
+        session[:flash] = 1
         redirect "/profile/mypage"
+      rescue
+        session[:flash] = 2
+        redirect "/profile/edit/#{params[:id]}"
       end
     else
+      session[:flash] = 3
       redirect "/profile/edit/#{params[:id]}"
     end
   end
-end
-
-get '/' do
-  slim :index
 end
 
 error 403 do
