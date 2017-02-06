@@ -5,22 +5,22 @@ form action='/data/patch' method='post'
     input.hidden name="id" value="#{@data.id}"
     p.form-group
       label for="name"  大学名:
-      input.form-control name="name" type="text" value="#{@data.name}"
+      input.form-control name="name" type="text" value="#{@data.name}" required="required"
     p.form-group
       label for="dept"  学部:
-      input.form-control name="dept" type="text" value="#{@data.dept}"
+      input.form-control name="dept" type="text" value="#{@data.dept}" required="required"
     p.form-group
       label for="pref"  所在県:
-      input.form-control name="pref" type="text" value="#{@data.pref}"
+      input.form-control name="pref" type="text" value="#{@data.pref}" required="required"
     p.form-group
       label for="deviation_value"  偏差値:
-      input.form-control name="deviation_value" type="number" value="#{@data.deviation_value}"
+      input.form-control name="deviation_value" type="number" value="#{@data.deviation_value}" required="required"
     p.form-group
       label for="exam_date"  試験日:
-      input.form-control name="exam_date" type="date" value="#{@data.exam_date}"
+      input.form-control name="exam_date" type="date" value="#{@data.exam_date}" required="required"
     p.form-group
       label for="result_date"  合格発表日:
-      input.form-control name="result_date" type="date" value="#{@data.result_date}"
+      input.form-control name="result_date" type="date" value="#{@data.result_date}" required="required"
     p.form-group
       label for="affirmation_date"  確約書締め切り:
       input.form-control name="affirmation_date" type="date" value="#{@data.affirmation_date}"

@@ -3,12 +3,12 @@ form action='/auth/register' method='post'
   fieldset
     p.form-group
       label for="email"  メールアドレス:
-      input.form-control name="email" type="text" value="" 
+      input.form-control name="email" type="text" value="" required="required"
     p.form-group
       label for="password"  パスワード:
-      input.form-control name="password" type="password" value="" 
+      input.form-control name="password" type="password" value="" required="required"
     p.form-group
       label for="confirm_password"  パスワード(再入力):
-      input.form-control name="confirm_password" type="password" value="" 
+      input.form-control name="confirm_password" type="password" value="" required="required"
     p.form-group
       input.btn.btn-defalut type="submit" value=("登録")

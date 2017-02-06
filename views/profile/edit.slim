@@ -5,12 +5,12 @@ form action='/profile/patch' method='post'
     input.hidden name="id" value="#{@user.id}"
     p.form-group
       label for="email"  メールアドレス:
-      input.form-control name="email" type="text" value="#{@data.email}" 
+      input.form-control name="email" type="text" value="#{@data.email}" required="required"
     p.form-group
       label for="password"  パスワード:
-      input.form-control name="password" type="password" value=""
+      input.form-control name="password" type="password" value="" required="required"
     p.form-group
       label for="confirm_password"  確認用パスワード:
-      input.form-control name="confirm_password" type="password" value=""
+      input.form-control name="confirm_password" type="password" value="" required="required"
     p.form-group
       input.form-control type="submit" value=("OK")

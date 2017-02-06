@@ -26,25 +26,25 @@ ActiveRecord::Schema.define(version: 20170203082018) do
   end
 
   create_table "univs", force: :cascade do |t|
-    t.string   "name"
-    t.string   "pref"
-    t.integer  "deviation_value"
-    t.date     "exam_date"
-    t.date     "result_date"
+    t.string   "name",             null: false
+    t.string   "pref",             null: false
+    t.string   "dept",             null: false
+    t.integer  "deviation_value",  null: false
+    t.date     "exam_date",        null: false
+    t.date     "result_date",      null: false
     t.date     "affirmation_date"
     t.integer  "admit_units"
     t.text     "remark"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
-    t.string   "dept"
     t.string   "document_url"
   end
 
   create_table "users", force: :cascade do |t|
-    t.string   "email"
-    t.boolean  "is_admin",      default: false
-    t.string   "password_hash"
-    t.string   "password_salt"
+    t.string   "email",                         null: false
+    t.boolean  "is_admin",      default: false, null: false
+    t.string   "password_hash",                 null: false
+    t.string   "password_salt",                 null: false
     t.datetime "created_at",                    null: false
     t.datetime "updated_at",                    null: false
   end
