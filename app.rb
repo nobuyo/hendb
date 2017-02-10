@@ -148,7 +148,6 @@ end
 
 before %r{/data|profile/*} do
   unless session[:user_id]
-    status 401
     session[:flash] = 11
     redirect "/auth/sign_in"
   end
