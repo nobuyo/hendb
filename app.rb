@@ -45,6 +45,9 @@ before %r{/$|/auth/*} do
   when 4 then
     @role = 'info'
     @alert = 'ログインしました'
+  when 5 then
+    @role = 'info'
+    @alert = '登録しました'
   end
   session[:flash] = 0
 end
@@ -84,6 +87,7 @@ namespace '/auth' do
         user.encrypt_password(params[:password])
         if user.save!
           session[:user_id] = user.id
+          session[:flash] = 5
           redirect "/"
         end
       else
@@ -167,9 +171,9 @@ namespace '/data' do
     slim :'data/new'
   end
 
-  get '/edit/:id' do
+  get %r{/edit/([\d]+)} do |id|
     begin
-      @data = Univ.find(params[:id])
+      @data = Univ.find(id)
       slim :'data/edit'
     rescue
       return status 404
@@ -239,8 +243,8 @@ namespace '/data' do
     slim :'data/index'
   end
 
-  get '/search/tags/:s' do
-    @data = Univ.joins(:exams).where(exams: {subject: params[:s]})
+  get %r{/search/tags/([\d]+)} do |s|
+    @data = Univ.joins(:exams).where(exams: {subject: s})
     if @data.blank?
       @mess = "検索条件に当てはまるものはまだありません。"
     else
@@ -249,9 +253,9 @@ namespace '/data' do
     slim :'data/index'
   end
 
-  get '/univ/:id' do
+  get %r{/univ/([\d]+)} do |id|
     begin
-      @univ = Univ.find(params[:id])
+      @univ = Univ.find(id)
       slim :'data/univ'
     rescue
       return status 404
@@ -284,9 +288,9 @@ namespace '/data' do
     end
   end
 
-  delete '/delete/:id' do
+  delete %r{/delete/([\d]+)} do |id|
     begin
-      univ = Univ.find(params[:id])
+      univ = Univ.find(id)
       univ.destroy!
       session[:flash] = 6
       redirect '/data/'
@@ -316,13 +320,13 @@ namespace '/profile' do
     slim :'profile/mypage'
   end
 
-  before '/edit/:id' do
-    return status 403 unless params[:id].to_i == session[:user_id]
+  before %r{/edit/([\d]+)} do |id|
+    return status 403 unless params[:id].to_i == id
   end
 
-  get '/edit/:id' do
+  get %r{/edit/([\d]+)} do |id|
     begin
-      @data = User.find(params[:id])
+      @data = User.find(id)
       slim :'profile/edit'
     rescue
       return status 404
