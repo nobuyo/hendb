@@ -15,7 +15,7 @@ ActiveRecord::Base.establish_connection :development
 
 enable :method_override
 enable :sessions
-set :session_secret, "My session secret", expire_after: 300
+set expire_after: 3000
 
 helpers do
   def link_to(url, txt=url)
@@ -31,7 +31,13 @@ helpers do
   end
 end
 
-before %r{/$|/auth/*} do
+before do
+  if session[:user_id]
+    @user = User.find(session[:user_id])
+  end
+end
+
+before %r{/$|/auth/*|/data/*|/profile/*} do
   case session[:flash]
   when 1 then
     @role = 'danger'
@@ -48,6 +54,33 @@ before %r{/$|/auth/*} do
   when 5 then
     @role = 'info'
     @alert = '登録しました'
+  when 11 then
+    @role = 'danger'
+    @alert = 'ログインしてください'
+  when 12 then
+    @role = 'info'
+    @alert = '変更を保存しました'
+  when 13 then
+    @role = 'danger'
+    @alert = '変更の保存に失敗しました'
+  when 14 then
+    @role = 'info'
+    @alert = '保存しました'
+  when 15 then
+    @role = 'danger'
+    @alert = '保存に失敗しました'
+  when 16 then
+    @role = 'info'
+    @alert = '削除しました'
+  when 21 then
+    @role = 'info'
+    @alert = '変更を保存しました'
+  when 22 then
+    @role = 'danger'
+    @alert = '変更の保存に失敗しました'
+  when 23 then
+    @role = 'danger'
+    @alert = '確認用パスワードが一致しません'
   end
   session[:flash] = 0
 end
@@ -113,41 +146,12 @@ namespace '/auth' do
   end
 end
 
-before do
-  if session[:user_id]
-    @user = User.find(session[:user_id])
-  end
-end
-
-before '/data/*' do
+before %r{/data|profile/*} do
   unless session[:user_id]
-    session[:flash] = 1
+    status 401
+    session[:flash] = 11
     redirect "/auth/sign_in"
   end
-end
-
-before '/data/*' do
-  case session[:flash]
-  when 1 then
-    @role = 'danger'
-    @alert = 'ログインしてください'
-  when 2 then
-    @role = 'info'
-    @alert = '変更を保存しました'
-  when 3 then
-    @role = 'danger'
-    @alert = '変更の保存に失敗しました'
-  when 4 then
-    @role = 'info'
-    @alert = '保存しました'
-  when 5 then
-    @role = 'danger'
-    @alert = '保存に失敗しました'
-  when 6 then
-    @role = 'info'
-    @alert = '削除しました'
-  end
-  session[:flash] = 0
 end
 
 before %r(/data/edit|new|create|patch|delete/?.*) do
@@ -199,10 +203,10 @@ namespace '/data' do
     end
     begin
       univ.save!
-      session[:flash] = 2
+      session[:flash] = 12
       redirect "/data/univ/#{params[:id]}"
     rescue
-      session[:flash] = 3
+      session[:flash] = 13
       redirect "/data/edit/#{params[:id]}"
     end
   end
@@ -280,10 +284,10 @@ namespace '/data' do
       end
       begin
         univ.save!
-        session[:flash] = 4
+        session[:flash] = 14
         redirect '/data/'
       rescue
-        session[:flash] = 5
+        session[:flash] = 15
       end
     end
   end
@@ -292,27 +296,12 @@ namespace '/data' do
     begin
       univ = Univ.find(id)
       univ.destroy!
-      session[:flash] = 6
+      session[:flash] = 16
       redirect '/data/'
     rescue
       return status 404
     end
   end
-end
-
-before '/profile/*' do
-  case session[:flash]
-  when 1 then
-    @role = 'info'
-    @alert = '変更を保存しました'
-  when 2 then
-    @role = 'danger'
-    @alert = '変更の保存に失敗しました'
-  when 3 then
-    @role = 'danger'
-    @alert = '確認用パスワードが一致しません'
-  end
-  session[:flash] = 0
 end
 
 namespace '/profile' do
@@ -341,14 +330,14 @@ namespace '/profile' do
       begin
         user.save!
         session[:user_id] = user.id
-        session[:flash] = 1
+        session[:flash] = 21
         redirect "/profile/mypage"
       rescue
-        session[:flash] = 2
+        session[:flash] = 22
         redirect "/profile/edit/#{params[:id]}"
       end
     else
-      session[:flash] = 3
+      session[:flash] = 23
       redirect "/profile/edit/#{params[:id]}"
     end
   end
