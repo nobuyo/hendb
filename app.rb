@@ -251,7 +251,7 @@ namespace '/data' do
     if @data.blank?
       @mess = "検索条件に当てはまるものはまだありません。"
     else
-      @mess = "実施科目\"#{translate_to_subject(params[:s].to_i)}\"での検索結果"
+      @mess = "実施科目\"#{translate_to_subject(s.to_i)}\"での検索結果"
     end
     slim :'data/index'
   end
@@ -309,7 +309,7 @@ namespace '/profile' do
   end
 
   before %r{/edit/([\d]+)} do |id|
-    return status 403 unless params[:id].to_i == id
+    return status 403 unless @user.id == id.to_i
   end
 
   get %r{/edit/([\d]+)} do |id|
