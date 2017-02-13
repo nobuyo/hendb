@@ -54,6 +54,9 @@ before %r{/$|/auth/*|/data/*|/profile/*} do
   when 5 then
     @role = 'info'
     @alert = '登録しました'
+  when 6 then
+    @role = 'info'
+    @alert = 'ログアウトしました'
   when 11 then
     @role = 'danger'
     @alert = 'ログインしてください'
@@ -110,13 +113,14 @@ namespace '/auth' do
 
   get '/sign_out' do
     session[:user_id] = nil
+    session[:flash] = 6
     redirect '/auth/sign_in'
   end
 
   post '/register' do
     unless User.exists?(email: params[:email])
       if params[:password] == params[:confirm_password]
-        user = User.new(email: Rack::Utils.escape_html(params[:email]))
+        user = User.new(email: params[:email])
         user.encrypt_password(params[:password])
         if user.save!
           session[:user_id] = user.id
@@ -322,7 +326,13 @@ namespace '/profile' do
   end
 
   put '/patch' do
-    if params[:password] == params[:confirm_password]
+    if params[:password] != params[:confirm_password]
+      session[:flash] = 23
+      redirect "/profile/edit/#{params[:id]}"
+    elsif User.find_by(email: params[:email]) != @user || !User.find_by(email: params[:email]).nil?
+      session[:flash] = 3
+      redirect "/profile/edit/#{params[:id]}"
+    else
       user = @user
       user.update!(email: Rack::Utils.escape_html(params[:email]))
       user.encrypt_password(params[:password])
@@ -335,9 +345,6 @@ namespace '/profile' do
         session[:flash] = 22
         redirect "/profile/edit/#{params[:id]}"
       end
-    else
-      session[:flash] = 23
-      redirect "/profile/edit/#{params[:id]}"
     end
   end
 end

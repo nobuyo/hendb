@@ -67,7 +67,7 @@ table.table.table-striped
 h3 募集要項リンク
 
 .space-left
-  - if @univ.document_url.nil?
+  - unless @univ.document_url.nil?
     h5
       a href=@univ.document_url
         i.fa.fa-external-link
