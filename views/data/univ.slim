@@ -67,7 +67,7 @@ table.table.table-striped
 h3 募集要項リンク
 
 .space-left
-  - unless @univ.document_url.nil?
+  - unless @univ.document_url.blank?
     h5
       a href=@univ.document_url
         i.fa.fa-external-link
@@ -85,7 +85,7 @@ h3 認定単位数
 
 h3 備考
 .space-left
-  - if @univ.remark
+  - unless @univ.remark.blank?
     = "#{@univ.remark}"
   - else
     | 特になし
