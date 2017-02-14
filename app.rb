@@ -157,13 +157,13 @@ before %r{/data|profile/*} do
   end
 end
 
-before %r(/data/edit|new|create|patch|delete/?.*) do
+before %r(/data/edit|new|create|patch|delete/.*) do
   return status 403 unless @user.is_admin
 end
 
 namespace '/data' do
   get '/' do
-    if %w(exam_date affirmation_date deviation_value).include?(params[:sort])
+    if %w(name exam_date affirmation_date deviation_value).include?(params[:sort])
       @data = Univ.all.order(params[:sort])
     else
       @data = Univ.all
@@ -215,7 +215,7 @@ namespace '/data' do
   end
 
   get '/bookmarks' do
-    if %w(exam_date affirmation_date deviation_value).include?(params[:sort])
+    if %w(name exam_date affirmation_date deviation_value).include?(params[:sort])
       @data = @user.univs.order(params[:sort])
     else
       @data = @user.univs
@@ -243,7 +243,7 @@ namespace '/data' do
 
   get '/search' do
     query = Rack::Utils.escape_html(params[:q])
-    if %w(exam_date affirmation_date deviation_value).include?(params[:sort])
+    if %w(name exam_date affirmation_date deviation_value).include?(params[:sort])
       @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{query}%","%#{query}%","%#{query}%").order(params[:sort])
     else
       @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{query}%","%#{query}%","%#{query}%")
@@ -254,8 +254,9 @@ namespace '/data' do
     slim :'data/index'
   end
 
-  get %r{/search/tags/([\d]+)} do |s|
-    if %w(exam_date affirmation_date deviation_value).include?(params[:sort])
+  get %r{/search/tags/([\d])} do |s|
+    return status 404 unless (1..9).include?(s.to_i)
+    if %w(name exam_date affirmation_date deviation_value).include?(params[:sort])
       @data = Univ.joins(:exams).where(exams: {subject: s}).order(params[:sort])
     else
       @data = Univ.joins(:exams).where(exams: {subject: s})
@@ -337,12 +338,12 @@ namespace '/profile' do
     if params[:password] != params[:confirm_password]
       session[:flash] = 23
       redirect "/profile/edit/#{params[:id]}"
-    elsif User.find_by(email: params[:email]) != @user || !User.find_by(email: params[:email]).nil?
+    elsif !User.find_by(email: params[:email]).nil? && User.find_by(email: params[:email]) != @user
       session[:flash] = 3
       redirect "/profile/edit/#{params[:id]}"
     else
       user = @user
-      user.update!(email: Rack::Utils.escape_html(params[:email]))
+      user.update!(email: params[:email])
       user.encrypt_password(params[:password])
       begin
         user.save!
