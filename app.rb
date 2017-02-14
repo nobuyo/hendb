@@ -243,7 +243,11 @@ namespace '/data' do
 
   get '/search' do
     query = Rack::Utils.escape_html(params[:q])
-    @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{query}%","%#{query}%","%#{query}%")
+    if %w(exam_date affirmation_date deviation_value).include?(params[:sort])
+      @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{query}%","%#{query}%","%#{query}%").order(params[:sort])
+    else
+      @data = Univ.where('name like ? or pref like ? or dept like ?', "%#{query}%","%#{query}%","%#{query}%")
+    end
     if @data.blank?
       @mess = "検索条件に当てはまるものはまだありません。"
     end
@@ -251,7 +255,11 @@ namespace '/data' do
   end
 
   get %r{/search/tags/([\d]+)} do |s|
-    @data = Univ.joins(:exams).where(exams: {subject: s})
+    if %w(exam_date affirmation_date deviation_value).include?(params[:sort])
+      @data = Univ.joins(:exams).where(exams: {subject: s}).order(params[:sort])
+    else
+      @data = Univ.joins(:exams).where(exams: {subject: s})
+    end
     if @data.blank?
       @mess = "検索条件に当てはまるものはまだありません。"
     else

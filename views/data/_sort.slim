@@ -3,8 +3,8 @@
     p.btn.text-right 並び替えオプション
   .col-md-6
     .btn-group.btn-group-justified role="group"
-      a.btn.btn-default href="/#{path}?sort=name" class=("active" if request[:sort] == 'name') 名前
-      a.btn.btn-default href="/#{path}?sort=exam_date" class=("active" if request[:sort] == 'exam_date') 試験日
-      a.btn.btn-default href="/#{path}?sort=affirmation_date" class=("active" if request[:sort] == 'affirmation_date') 確約書締切日
-      a.btn.btn-default href="/#{path}?sort=deviation_value" class=("active" if request[:sort] == 'deviation_value') 偏差値
+      a.btn.btn-default href="#{path}?sort=name" class=("active" if request[:sort] == 'name') 名前
+      a.btn.btn-default href="#{path}?sort=exam_date" class=("active" if request[:sort] == 'exam_date') 試験日
+      a.btn.btn-default href="#{path}?sort=affirmation_date" class=("active" if request[:sort] == 'affirmation_date') 確約書締切日
+      a.btn.btn-default href="#{path}?sort=deviation_value" class=("active" if request[:sort] == 'deviation_value') 偏差値
   .col-md-offset-2
