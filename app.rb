@@ -343,7 +343,7 @@ namespace '/profile' do
       redirect "/profile/edit/#{params[:id]}"
     else
       user = @user
-      user.update!(email: params[:email])
+      user.update!(email: Rack::Utils.escape_html(params[:email]))
       user.encrypt_password(params[:password])
       begin
         user.save!
